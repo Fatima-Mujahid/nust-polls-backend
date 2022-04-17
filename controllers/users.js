@@ -85,6 +85,7 @@ const forgotPassword = async (req, res) => {
         text: message,
       });
       res.status(200).json({
+        resetToken,
         message: 'Email sent',
         success: true,
       });
@@ -117,6 +118,7 @@ const resetPassword = async (req, res) => {
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
+
     try {
       await user.save();
       res.status(201).json({

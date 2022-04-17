@@ -57,22 +57,22 @@ const studentSchema = new mongoose.Schema({
   ],
 });
 
-studentSchema.pre('save', function (next) {
-  if (this.status === 'Hostellite' && !this.hostel) {
-    next(new Error('Hostel is required when student is hostellite'));
-  }
-  if (
-    this.status === 'Dayscholar' &&
-    this.transport.pickAndDrop &&
-    !this.transport.route
-  ) {
-    next(
-      new Error(
-        'Transport route is required when student uses pick and drop service'
-      )
-    );
-  }
-  next();
-});
+// studentSchema.pre('save', function (next) {
+//   if (this.status === 'Hostellite' && !this.hostel) {
+//     next(new Error('Hostel is required when student is hostellite'));
+//   }
+//   if (
+//     this.status === 'Dayscholar' &&
+//     this.transport.pickAndDrop &&
+//     !this.transport.route
+//   ) {
+//     next(
+//       new Error(
+//         'Transport route is required when student uses pick and drop service'
+//       )
+//     );
+//   }
+//   next();
+// });
 
 export default mongoose.model('Student', studentSchema);
