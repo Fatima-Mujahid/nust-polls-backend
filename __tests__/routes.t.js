@@ -243,12 +243,22 @@ describe('Testing Edit Route', function () {
       });
   });
 
+  
   test('Invalid keys in request body', async () => {
     await request(app)
       .post('/polls/edit/625183c6a5922ce026818b96')
       .send({ created_on: '02-02-2026', modified: true })
       .then((res) => {
         expect(res.statusCode).toBe(500);
+      });
+  });
+
+  test('Editing Poll with Valid Deadline', async () => {
+    const res = await request(app)
+      .post('/polls/edit/625183c6a5922ce026818b96')
+      .send({ deadline: '02-02-2029' })
+      .then((res) => {
+        expect(res.statusCode).toBe(200);
       });
   });
 
@@ -309,14 +319,7 @@ describe('Testing Edit Route', function () {
       });
   });
 
-  test('Editing Deadline which is before Current Date', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-02-2000' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+
 
   test('Editing Deadline which is before Current Date', async () => {
     const res = await request(app)
