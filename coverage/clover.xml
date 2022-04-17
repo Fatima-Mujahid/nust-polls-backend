@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1650184023889" clover="3.2.0">
-  <project timestamp="1650184023889" name="All files">
-    <metrics statements="140" coveredstatements="55" conditionals="38" coveredconditionals="3" methods="19" coveredmethods="4" elements="197" coveredelements="62" complexity="0" loc="140" ncloc="140" packages="5" files="10" classes="10"/>
+<coverage generated="1650193882009" clover="3.2.0">
+  <project timestamp="1650193882009" name="All files">
+    <metrics statements="168" coveredstatements="87" conditionals="62" coveredconditionals="27" methods="20" coveredmethods="6" elements="250" coveredelements="120" complexity="0" loc="168" ncloc="168" packages="5" files="10" classes="10"/>
     <package name="nust-polls-backend">
       <metrics statements="27" coveredstatements="16" conditionals="8" coveredconditionals="1" methods="6" coveredmethods="2"/>
       <file name="app.js" path="/Users/fatimatuzzehra/Desktop/nust-polls-backend/app.js">
@@ -29,37 +29,65 @@
         <line num="143" count="1" type="stmt"/>
         <line num="144" count="1" type="stmt"/>
         <line num="147" count="1" type="stmt"/>
-        <line num="154" count="1" type="stmt"/>
+        <line num="153" count="1" type="stmt"/>
+        <line num="154" count="0" type="stmt"/>
         <line num="155" count="0" type="stmt"/>
         <line num="156" count="0" type="stmt"/>
-        <line num="157" count="0" type="stmt"/>
       </file>
     </package>
     <package name="nust-polls-backend.controllers">
-      <metrics statements="73" coveredstatements="20" conditionals="16" coveredconditionals="2" methods="7" coveredmethods="2"/>
+      <metrics statements="101" coveredstatements="52" conditionals="40" coveredconditionals="26" methods="8" coveredmethods="4"/>
       <file name="polls.js" path="/Users/fatimatuzzehra/Desktop/nust-polls-backend/controllers/polls.js">
-        <metrics statements="21" coveredstatements="17" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="2"/>
+        <metrics statements="49" coveredstatements="49" conditionals="26" coveredconditionals="26" methods="4" coveredmethods="4"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="1" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
-        <line num="21" count="2" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="28" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="34" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="36" count="3" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="41" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="11" type="stmt"/>
+        <line num="45" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="6" type="stmt"/>
+        <line num="48" count="6" type="stmt"/>
+        <line num="52" count="5" type="stmt"/>
+        <line num="55" count="11" type="stmt"/>
+        <line num="56" count="11" type="stmt"/>
+        <line num="57" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="58" count="5" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="69" count="13" type="stmt"/>
+        <line num="70" count="13" type="stmt"/>
+        <line num="73" count="13" type="stmt"/>
+        <line num="74" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="79" count="12" type="stmt"/>
+        <line num="82" count="6" type="stmt"/>
+        <line num="83" count="2" type="stmt"/>
+        <line num="84" count="2" type="stmt"/>
+        <line num="88" count="11" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="94" count="9" type="stmt"/>
+        <line num="96" count="9" type="stmt"/>
+        <line num="97" count="9" type="stmt"/>
+        <line num="98" count="35" type="cond" truecount="2" falsecount="0"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="103" count="8" type="stmt"/>
+        <line num="107" count="4" type="stmt"/>
+        <line num="108" count="4" type="stmt"/>
+        <line num="116" count="1" type="stmt"/>
+        <line num="121" count="8" type="stmt"/>
       </file>
       <file name="users.js" path="/Users/fatimatuzzehra/Desktop/nust-polls-backend/controllers/users.js">
         <metrics statements="52" coveredstatements="3" conditionals="14" coveredconditionals="0" methods="4" coveredmethods="0"/>
