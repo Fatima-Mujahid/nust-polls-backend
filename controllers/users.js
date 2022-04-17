@@ -8,13 +8,13 @@ import sendEmail from '../utils/sendEmail.js';
 
 //LOGIN CONTROLLER
 
-const loginUser = (req, res, next) => {
-  passport.authenticate(
+const loginUser = async (req, res, next) => {
+  await passport.authenticate(
     'local',
     { session: false },
     async (err, user, info) => {
       if (err || !user) {
-        res.status(500).json({ message: info.message, success: false });
+        res.status(404).json({ message: info.message, success: false });
       } else {
         const { password, ..._user } = user.toObject();
         const token = jwt.sign(_user, process.env.JWT_SECRET_KEY);
@@ -30,7 +30,7 @@ const loginUser = (req, res, next) => {
               .populate('admin', '-password')
               .exec();
             if (!admin)
-              res.status(404).json({
+              return res.status(404).json({
                 message: 'Admin does not exist',
                 success: false,
               });
@@ -44,7 +44,7 @@ const loginUser = (req, res, next) => {
               .populate('student', '-password')
               .exec();
             if (!student)
-              res.status(404).json({
+              return res.status(404).json({
                 message: 'Student does not exist',
                 success: false,
               });
@@ -53,7 +53,7 @@ const loginUser = (req, res, next) => {
             res.status(500).json({ message: err.message, success: false });
           }
         } else {
-          res.status(500).json({
+          res.status(404).json({
             message: 'User does not exist',
             success: false,
           });

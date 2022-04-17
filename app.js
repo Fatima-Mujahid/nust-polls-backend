@@ -144,9 +144,8 @@ const server = app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`);
 });
 
-console.log("run")
+console.log('run');
 export { app };
-
 
 //DATABASE ERROR
 
@@ -156,5 +155,3 @@ process.on('unhandledRejection', (err, promise) => {
     process.exit(1);
   });
 });
-
-
