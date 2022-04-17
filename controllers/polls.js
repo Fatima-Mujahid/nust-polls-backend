@@ -1,6 +1,8 @@
 import Poll from '../models/poll.js';
+import PollQues from '../models/poll-questions.js';
 import Admin from '../models/admin.js'
 import mongoose from 'mongoose';
+import { request } from 'express';
 
 const getPolls = async (request, response) => {
   var ObjectId = mongoose.Types.ObjectId;
@@ -15,8 +17,6 @@ const getPolls = async (request, response) => {
     response.send(polls);
 
   } catch (error) {
-
-    console.log("Error")
     response.status(500).send(error);
 
   }
@@ -124,4 +124,16 @@ try{
   
 };
 
-export { getPolls, createPoll, editPoll };
+const populatePoll = async (request, response) => {
+  try{
+      
+
+
+  } catch(err){
+    console.log(err)
+  }
+
+
+}
+
+export { getPolls, createPoll, editPoll, populatePoll };
