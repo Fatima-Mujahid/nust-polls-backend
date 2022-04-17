@@ -168,7 +168,7 @@ describe('Testing Reset Password Route', function () {
     const res = await request(app)
       .put(`/user/resetpassword/${resetToken}`)
       .send({
-        password: 'friend1',
+        password: 'friend11',
       });
     expect(res.status).toEqual(400);
     expect(res.body.message).toEqual('Invalid token');
