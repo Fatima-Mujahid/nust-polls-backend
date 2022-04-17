@@ -14,7 +14,7 @@ const loginUser = async (req, res, next) => {
     { session: false },
     async (err, user, info) => {
       if (err || !user) {
-        res.status(404).json({ message: info.message, success: false });
+        res.status(404).json({ message: info?.message, success: false });
       } else {
         const { password, ..._user } = user.toObject();
         const token = jwt.sign(_user, process.env.JWT_SECRET_KEY);
@@ -70,7 +70,7 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user)
-      res.status(404).json({
+      return res.status(404).json({
         message: 'Email is not correct',
         success: false,
       });

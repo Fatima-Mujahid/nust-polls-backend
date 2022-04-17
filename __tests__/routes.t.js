@@ -3,8 +3,8 @@ import { app } from '../app.js';
 
 //TESTING USER ROUTES
 
-describe('GET /user/login', function () {
-  test('Valid login credentials for admin', async () => {
+describe('Testing User Login Route', function () {
+  test('Valid Login Credentials for Admin', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'fatima.mujahid',
       password: 'hello123#',
@@ -12,23 +12,25 @@ describe('GET /user/login', function () {
     expect(res.status).toEqual(200);
     expect(res.body.message).toEqual('Login successful');
     expect(res.body.success).toEqual(true);
-    expect(res.body).toHaveProperty('data');
     expect(res.body).toHaveProperty('token');
-  });
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data.admin.role).toEqual('admin');
+  }, 10000);
 
-  test('Valid login credentials for student', async () => {
+  test('Valid Login Credentials for Student', async () => {
     const res = await request(app).post('/user/login').send({
-      username: 'fatima.mujahid',
-      password: 'hello123#',
+      username: 'fmujahid.bese18seecs',
+      password: 'password',
     });
     expect(res.status).toEqual(200);
     expect(res.body.message).toEqual('Login successful');
     expect(res.body.success).toEqual(true);
-    expect(res.body).toHaveProperty('data');
     expect(res.body).toHaveProperty('token');
-  });
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data.student.role).toEqual('student');
+  }, 10000);
 
-  test('Invalid credentials or unregistered user', async () => {
+  test('Invalid Credentials or Unregistered User', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'ahmed.ali',
       password: 'hello87**',
@@ -38,7 +40,7 @@ describe('GET /user/login', function () {
     expect(res.body.success).toEqual(false);
   });
 
-  test('Incorrect password', async () => {
+  test('Incorrect Password', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'fatima.mujahid',
       password: 'hello123',
@@ -48,19 +50,19 @@ describe('GET /user/login', function () {
     expect(res.body.success).toEqual(false);
   });
 
-  test('Missing password', async () => {
+  test('Missing Password', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'fatima.mujahid',
     });
     expect(res.status).toEqual(404);
   });
 
-  test('Missing credentials', async () => {
+  test('Missing Credentials', async () => {
     const res = await request(app).post('/user/login');
     expect(res.status).toEqual(404);
   });
 
-  test('User with admin role but admin does not exist', async () => {
+  test('User with Admin Role but Admin does not exist', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'sidra.munir',
       password: 'friends65',
@@ -70,7 +72,7 @@ describe('GET /user/login', function () {
     expect(res.body.success).toEqual(false);
   });
 
-  test('User with student role but student does not exist', async () => {
+  test('User with Student Role but Student does not exist', async () => {
     const res = await request(app).post('/user/login').send({
       username: 'araza.bese19seecs',
       password: 'freedom1',
@@ -81,283 +83,321 @@ describe('GET /user/login', function () {
   });
 });
 
+describe('Testing Forgot Password Route', function () {
+  test('Valid Email to Send Reset Password Link', async () => {
+    const res = await request(app).post('/user/forgotpassword').send({
+      email: 'fmujahid.bese19seecs@seecs.edu.pk',
+    });
+    expect(res.status).toEqual(200);
+    expect(res.body.message).toEqual('Email sent');
+    expect(res.body.success).toEqual(true);
+  });
+
+  test('User with this Email does not exist', async () => {
+    const res = await request(app).post('/user/forgotpassword').send({
+      email: 'fatimamujahid.bese19seecs@seecs.edu.pk',
+    });
+    expect(res.status).toEqual(404);
+    expect(res.body.message).toEqual('Email is not correct');
+    expect(res.body.success).toEqual(false);
+  });
+
+  test('Invalid Email Format', async () => {
+    const res = await request(app).post('/user/forgotpassword').send({
+      email: 'fmujahid.bese19seecs',
+    });
+    expect(res.status).toEqual(404);
+    expect(res.body.message).toEqual('Email is not correct');
+    expect(res.body.success).toEqual(false);
+  });
+
+  test('Invalid Email Format', async () => {
+    const res = await request(app).post('/user/forgotpassword').send({
+      email: 'fmujahid.bese19seecs@seecs',
+    });
+    expect(res.status).toEqual(404);
+    expect(res.body.message).toEqual('Email is not correct');
+    expect(res.body.success).toEqual(false);
+  });
+});
+
 //TESTING POLLS ROUTES
 
-describe('Testing Poll Fetching Route', function () {
-  test('ID with Invalid Length', async () => {
-    await request(app)
-      .get('/polls/62cd4fee7418ba78')
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+// describe('Testing Poll Fetching Route', function () {
+//   test('ID with Invalid Length', async () => {
+//     await request(app)
+//       .get('/polls/62cd4fee7418ba78')
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('ID with Invalid Format', async () => {
-    await request(app)
-      .get('/polls/62cd4fee?,.,;418ba78')
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('ID with Invalid Format', async () => {
+//     await request(app)
+//       .get('/polls/62cd4fee?,.,;418ba78')
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Correct Admin ID', async () => {
-    await request(app)
-      .get('/polls/6238cd51ee7418ba7890b087')
-      .then((res) => {
-        expect(res.statusCode).toBe(200);
-      });
-  });
+//   test('Correct Admin ID', async () => {
+//     await request(app)
+//       .get('/polls/6238cd51ee7418ba7890b087')
+//       .then((res) => {
+//         expect(res.statusCode).toBe(200);
+//       });
+//   });
 
-  test('ID with a valid format that does not exist', async () => {
-    await request(app)
-      .get('/polls/6238cd4fee7418ba2890b983')
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
-});
+//   test('ID with a valid format that does not exist', async () => {
+//     await request(app)
+//       .get('/polls/6238cd4fee7418ba2890b983')
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
+// });
 
-describe('Testing Edit Route', function () {
-  test('Editing Poll Name with Correct Length', async () => {
-    await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ poll_name: 'Restoring GPA Scholarship' })
-      .then((res) => {
-        expect(res.statusCode).toBe(200);
-      });
-  });
+// describe('Testing Edit Route', function () {
+//   test('Editing Poll Name with Correct Length', async () => {
+//     await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ poll_name: 'Restoring GPA Scholarship' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(200);
+//       });
+//   });
 
-  test('Invalid keys in request body', async () => {
-    await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ created_on: '02-02-2026', modified: true })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Invalid keys in request body', async () => {
+//     await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ created_on: '02-02-2026', modified: true })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Entering Invalid Poll ID in terms of length', async () => {
-    await request(app)
-      .post('/polls/edit/625183c6a5922c18b96')
-      .send({ poll_name: 'Restoring GPA Scholarship' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Entering Invalid Poll ID in terms of length', async () => {
+//     await request(app)
+//       .post('/polls/edit/625183c6a5922c18b96')
+//       .send({ poll_name: 'Restoring GPA Scholarship' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Entering Invalid Poll ID in terms of format', async () => {
-    await request(app)
-      .post('/polls/edit/625183c6a5.,,,;;922c18b96')
-      .send({ poll_name: 'Restoring GPA Scholarship' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Entering Invalid Poll ID in terms of format', async () => {
+//     await request(app)
+//       .post('/polls/edit/625183c6a5.,,,;;922c18b96')
+//       .send({ poll_name: 'Restoring GPA Scholarship' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Editing Description with Correct Length', async () => {
-    await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({
-        description:
-          'This poll has been generated to determine whether the students of SEECS are in favour of restoring GPA scholarships.',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(200);
-      });
-  });
+//   test('Editing Description with Correct Length', async () => {
+//     await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({
+//         description:
+//           'This poll has been generated to determine whether the students of SEECS are in favour of restoring GPA scholarships.',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(200);
+//       });
+//   });
 
-  test('Editing Poll Name with Incorrect Length', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ poll_name: 'Restor' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Editing Poll Name with Incorrect Length', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ poll_name: 'Restor' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Editing Description with Incorrect Length', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ description: 'Lorem Ipsum hagsi' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Editing Description with Incorrect Length', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ description: 'Lorem Ipsum hagsi' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Editing Deadline which is before Creation Date', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-02-2020' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Editing Deadline which is before Creation Date', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '02-02-2020' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Editing Deadline which is before Current Date', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-02-2000' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Editing Deadline which is before Current Date', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '02-02-2000' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Editing Deadline which is before Current Date', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-02-2000' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Editing Deadline which is before Current Date', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '02-02-2000' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Entering Deadline in Invalid Format', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-33-20020' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Entering Deadline in Invalid Format', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '02-33-20020' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Entering Deadline in Invalid Format', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '02-aa-20020' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Entering Deadline in Invalid Format', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '02-aa-20020' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Entering Deadline in Invalid Format', async () => {
-    const res = await request(app)
-      .post('/polls/edit/625183c6a5922ce026818b96')
-      .send({ deadline: '2020-12-12' })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
-});
+//   test('Entering Deadline in Invalid Format', async () => {
+//     const res = await request(app)
+//       .post('/polls/edit/625183c6a5922ce026818b96')
+//       .send({ deadline: '2020-12-12' })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
+// });
 
-describe('Testing Creation Route', function () {
-  test('Correct Poll', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '625181b7d3ebdaecde92c8f1',
-        poll_name: 'Greatness is at its peak',
-        description:
-          'Lorem Ipsum hagsi id sjkdhjg whafhaw hfailhukka whawhlfchawh',
-        deadline: '11-11-2024',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(200);
-      });
-  });
+// describe('Testing Creation Route', function () {
+//   test('Correct Poll', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '625181b7d3ebdaecde92c8f1',
+//         poll_name: 'Greatness is at its peak',
+//         description:
+//           'Lorem Ipsum hagsi id sjkdhjg whafhaw hfailhukka whawhlfchawh',
+//         deadline: '11-11-2024',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(200);
+//       });
+//   });
 
-  test('Description Short in Length', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        description: 'Lorem Ipshags',
-        deadline: '11-11-2024',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Description Short in Length', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         description: 'Lorem Ipshags',
+//         deadline: '11-11-2024',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Poll Name Short in Length', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Great',
-        description: 'Lorem Ipshags wkdhqw hadhiah ihecjwejc',
-        deadline: '11-11-2024',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Poll Name Short in Length', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Great',
+//         description: 'Lorem Ipshags wkdhqw hadhiah ihecjwejc',
+//         deadline: '11-11-2024',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Deadline before Creation', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        description: 'Lorem Ipshags hdgsvcs whvcwh',
-        deadline: '11-11-2020',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Deadline before Creation', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         description: 'Lorem Ipshags hdgsvcs whvcwh',
+//         deadline: '11-11-2020',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Invalid Deadline format', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        description: 'Lorem Ipshags',
-        deadline: '11-111-2024',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Invalid Deadline format', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         description: 'Lorem Ipshags',
+//         deadline: '11-111-2024',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Invalid Deadline format', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        description: 'Lorem Ipshagnksc whciuwhcwhis',
-        deadline: '11-2024-11',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Invalid Deadline format', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         description: 'Lorem Ipshagnksc whciuwhcwhis',
+//         deadline: '11-2024-11',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Invalid Deadline Format', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        description: 'Lorem Ipshag nwkcwkch ssschwiechis',
-        deadline: '11-11..-2024acc',
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Invalid Deadline Format', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         description: 'Lorem Ipshag nwkcwkch ssschwiechis',
+//         deadline: '11-11..-2024acc',
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Invalid Keys', async () => {
-    const res = await request(app)
-      .post('/polls/create')
-      .send({
-        admin: '6238cd4fee7418ba7890b083',
-        poll_name: 'Greatness is peaking',
-        modified: true,
-      })
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-      });
-  });
+//   test('Invalid Keys', async () => {
+//     const res = await request(app)
+//       .post('/polls/create')
+//       .send({
+//         admin: '6238cd4fee7418ba7890b083',
+//         poll_name: 'Greatness is peaking',
+//         modified: true,
+//       })
+//       .then((res) => {
+//         expect(res.statusCode).toBe(500);
+//       });
+//   });
 
-  test('Invalid Admin ID', async () => {
-    const res = await request(app).post('/polls/create').send({
-      admin: '6238cd4fee748ba7...b083',
-      poll_name: 'Greatness is peaking',
-      description: 'Lorem Ipshag nwkcwkch ssschwiechis',
-      deadline: '11-11..-2024acc',
-    });
-  });
-});
+//   test('Invalid Admin ID', async () => {
+//     const res = await request(app).post('/polls/create').send({
+//       admin: '6238cd4fee748ba7...b083',
+//       poll_name: 'Greatness is peaking',
+//       description: 'Lorem Ipshag nwkcwkch ssschwiechis',
+//       deadline: '11-11..-2024acc',
+//     });
+//   });
+// });
