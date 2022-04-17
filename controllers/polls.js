@@ -126,11 +126,17 @@ try{
 
 const populatePoll = async (request, response) => {
   try{
-      
 
+    await PollQues.create(
+      request.body
+    )
+    response.send("Done")
 
   } catch(err){
+
     console.log(err)
+    response.status(500).send(error);    
+
   }
 
 
